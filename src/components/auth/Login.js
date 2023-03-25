@@ -10,11 +10,38 @@ import {
   Link,
   Text,
 } from '@chakra-ui/react';
-import { REGISTER } from 'lib/routes';
+import { useLogin } from 'hooks/auth';
+import { DASHBOARD, REGISTER } from 'lib/routes';
 import React from 'react';
+import { useForm } from 'react-hook-form';
 import { Link as RouterLink } from 'react-router-dom';
+import { emailValidate, passwordValidate } from 'utils/form-validate';
 
 export default function Login() {
+  // destructure login and loading parameters from custom useLogin hook
+  const { login, isLoading } = useLogin();
+
+  //handling form input state
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
+
+  // define handleLogin function
+  async function handleLogin(data) {
+    // the data object comes from information extracted from the handleSubmit function of the useForm hook.
+    const succeded = await login({
+      email: data.email,
+      password: data.password,
+      redirectTo: DASHBOARD,
+    });
+
+    // resets the form clearing the form's input fields
+    succeded && reset();
+  }
+
   return (
     // Center creates a centered div
     <Center w="100%" h="100vh">
@@ -23,16 +50,28 @@ export default function Login() {
           Log In
         </Heading>
 
-        <form onSubmit={() => {}}>
-          <FormControl isInvalid={true} py="2">
+        <form onSubmit={handleSubmit(handleLogin)}>
+          <FormControl isInvalid={errors.email} py="2">
             <FormLabel>Email</FormLabel>
-            <Input type="email" placeholder="user@email.com" />
-            <FormErrorMessage>This is an error message</FormErrorMessage>
+            <Input
+              type="email"
+              placeholder="user@email.com"
+              {...register('email', emailValidate)}
+            />
+            <FormErrorMessage>
+              {errors.email && errors.email.message}
+            </FormErrorMessage>
           </FormControl>
-          <FormControl isInvalid={true} py="2">
+          <FormControl isInvalid={errors.password} py="2">
             <FormLabel>Password</FormLabel>
-            <Input type="password" placeholder="password123" />
-            <FormErrorMessage>This is an error message</FormErrorMessage>
+            <Input
+              type="password"
+              placeholder="password123"
+              {...register('password', passwordValidate)}
+            />
+            <FormErrorMessage>
+              {errors.password && errors.password.message}
+            </FormErrorMessage>
           </FormControl>
           <Button
             mt="4"
@@ -40,7 +79,7 @@ export default function Login() {
             colorScheme="teal"
             size="md"
             w="full"
-            isLoading={true}
+            isLoading={isLoading}
             loadingText="Logging In"
           >
             Log In
