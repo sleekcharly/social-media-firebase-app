@@ -1,3 +1,4 @@
+import Navbar from 'components/navbar';
 import { useAuth } from 'hooks/auth';
 import { LOGIN } from 'lib/routes';
 import React, { useEffect } from 'react';
@@ -13,21 +14,21 @@ export default function Layout() {
 
   //   get user state and isLoading state from custom useAuth hook
   const { user, isLoading } = useAuth();
-  console.log(user);
 
   // re-render component if pathName changes
   useEffect(() => {
-    // navigate to login page if pathname starts with protected and the user is not logged in.
-    if (pathname.startsWith('/protected') && !user) {
+    // navigate to login page if user is not loading,  pathname starts with protected and the user is not logged in.
+    if (!isLoading && pathname.startsWith('/protected') && !user) {
       navigate(LOGIN);
     }
-  }, [pathname, user]);
+  }, [pathname, user, isLoading]);
 
   // return loading text if isLoading is true
   if (isLoading) return 'Loading...';
 
   return (
     <>
+      <Navbar />
       <Outlet />
     </>
   );
