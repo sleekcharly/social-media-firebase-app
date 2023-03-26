@@ -1,6 +1,7 @@
 // This file is used to configure the list of all the different routed used in the application
 import Login from 'components/auth/Login';
 import Register from 'components/auth/Register';
+import Dashboard from 'components/dashboard';
 import Layout from 'components/layout';
 import { createBrowserRouter } from 'react-router-dom';
 
@@ -12,6 +13,8 @@ export const REGISTER = '/register';
 // define protected routes
 export const PROTECTED = '/protected';
 export const DASHBOARD = '/protected/dashboard';
+export const USERS = '/protected/users';
+export const PROFILE = '/protected/profile/:id';
 
 // create the router
 export const router = createBrowserRouter([
@@ -21,6 +24,10 @@ export const router = createBrowserRouter([
   {
     path: PROTECTED,
     element: <Layout />,
-    children: [{ path: DASHBOARD, element: 'Dashboard' }],
+    children: [
+      { path: DASHBOARD, element: <Dashboard /> },
+      { path: USERS, element: 'users' },
+      { path: PROFILE, element: 'profile' },
+    ],
   },
 ]);
