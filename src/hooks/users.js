@@ -1,9 +1,12 @@
 import { useToast } from '@chakra-ui/react';
-import { doc, query, updateDoc } from 'firebase/firestore';
+import { collection, doc, query, updateDoc } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { db, storage } from 'lib/firbase';
 import { useState } from 'react';
-import { useDocumentData } from 'react-firebase-hooks/firestore';
+import {
+  useCollectionData,
+  useDocumentData,
+} from 'react-firebase-hooks/firestore';
 import { useNavigate } from 'react-router-dom';
 
 // hook for getting user data
@@ -15,6 +18,14 @@ export function useUser(id) {
   const [user, isLoading] = useDocumentData(q);
 
   return { user, isLoading };
+}
+
+// hook for getting all users
+export function useUsers() {
+  // get users from firestore
+  const [users, isLoading] = useCollectionData(collection(db, 'users'));
+
+  return { users, isLoading };
 }
 
 // hook for uploading images

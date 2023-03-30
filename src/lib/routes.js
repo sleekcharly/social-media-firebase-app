@@ -5,6 +5,7 @@ import Comments from 'components/comments';
 import Dashboard from 'components/dashboard';
 import Layout from 'components/layout';
 import Profile from 'components/profile';
+import Users from 'components/users';
 import { createBrowserRouter } from 'react-router-dom';
 
 // difine the different paths
@@ -29,7 +30,7 @@ export const router = createBrowserRouter([
     element: <Layout />,
     children: [
       { path: DASHBOARD, element: <Dashboard /> },
-      { path: USERS, element: 'users' },
+      { path: USERS, element: <Users /> },
       { path: PROFILE, element: <Profile /> },
       { path: COMMENTS, element: <Comments /> },
     ],
