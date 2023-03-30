@@ -15,7 +15,7 @@ import { Link } from 'react-router-dom';
 
 export default function Actions({ post }) {
   // destructure the post information
-  const { id, likes } = post;
+  const { id, likes, uid } = post;
 
   //   get the user object to determine if the post was liked by the logged in user
   const { user, isLoading: userLoading } = useAuth();
@@ -67,16 +67,18 @@ export default function Actions({ post }) {
         {comments?.length}
       </Flex>
 
-      <IconButton
-        ml="auto"
-        onClick={deletePost}
-        isLoading={deleteLoading}
-        size="md"
-        colorScheme="red"
-        variant="ghost"
-        icon={<FaTrash />}
-        isRound
-      />
+      {!userLoading && user.id === uid && (
+        <IconButton
+          ml="auto"
+          onClick={deletePost}
+          isLoading={deleteLoading}
+          size="md"
+          colorScheme="red"
+          variant="ghost"
+          icon={<FaTrash />}
+          isRound
+        />
+      )}
     </Flex>
   );
 }

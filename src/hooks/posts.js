@@ -5,7 +5,9 @@ import {
   arrayRemove,
   arrayUnion,
   collection,
+  deleteDoc,
   doc,
+  getDocs,
   orderBy,
   query,
   setDoc,
@@ -105,8 +107,42 @@ export function useDeletePost(id) {
   //  set loading state
   const [isLoading, setLoading] = useState(false);
 
+  // get to for feedback
+  const toast = useToast();
+
   // asynchronous function for deleting a post from firebase firestore
-  async function deletePost() {}
+  async function deletePost() {
+    // confirm if user truely wants to delete the post
+    const res = window.confirm('Are you sure you want to delete this post?');
+
+    if (res) {
+      // sel loading state
+      setLoading(true);
+
+      // delete post document
+      await deleteDoc(doc(db, 'posts', id));
+
+      // delete associated comments
+      async function deleteComment(docRef) {
+        deleteDoc(docRef);
+      }
+
+      const q = query(collection(db, 'comments'), where('postID', '==', id));
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => deleteComment(doc.ref));
+
+      //   send feedback to user
+      toast({
+        title: 'Post deleted!',
+        status: 'success',
+        isClosable: true,
+        position: 'top',
+        duration: 5000,
+      });
+
+      setLoading(false);
+    }
+  }
 
   return { deletePost, isLoading };
 }
