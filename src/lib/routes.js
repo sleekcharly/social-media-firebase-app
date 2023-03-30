@@ -22,7 +22,7 @@ export const COMMENTS = '/protected/comments/:id';
 
 // create the router
 export const router = createBrowserRouter([
-  { path: ROOT, element: 'Public root' },
+  { path: ROOT, element: <Register /> },
   { path: LOGIN, element: <Login /> },
   { path: REGISTER, element: <Register /> },
   {
