@@ -62,7 +62,7 @@ export default function Profile() {
               Likes: todo!
             </Text>
             <Text color="gray.700" fontSize={['sm', 'lg']}>
-              Joined: {format(user.datE, 'MMMM YYY')}
+              Joined: {format(user.date, 'MMMM YYY')}
             </Text>
           </HStack>
         </Stack>

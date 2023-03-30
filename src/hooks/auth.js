@@ -132,7 +132,7 @@ export function useRegister() {
           id: res.user.uid,
           username: username.toLowerCase(),
           avatar: '',
-          datE: Date.now(),
+          date: Date.now(),
         });
 
         // set toast for successful registration
